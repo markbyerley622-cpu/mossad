@@ -1,57 +1,39 @@
 /**
  * Ambient Message Generator
- * Creates the "alive" feeling with continuous fictional intel chatter
- * Now with extra spicy humor
+ * Hype messages to get agents posting on X
  */
 
-const NETWORK_CHATTER = [
-  'Scanning network nodes... ${nodes} active connections',
-  'Signal strength: OPTIMAL',
-  'Decrypting incoming transmission...',
-  'New agent registered: NODE-${rand}',
-  'Hash verification complete: 0x${hex}',
-  'Syncing leaderboard data...',
-  'Mission pool updated: ${num} active bounties',
-  'Engagement metrics processing...',
-  'Blockchain confirmation: Block #${block}',
-  'Agent @${user} has entered the network',
-  'Proof-of-post validation queued...',
-  'Community score recalculating...',
-  'New submission detected: MSN-${mission}',
-  'Reward pool balance: ${sol} SOL',
-  'Network latency: ${ms}ms',
-  'Intel packet received: ${bytes} bytes',
-  'Consensus achieved: ${nodes} nodes agree',
-  'Mempool status: ${pending} pending',
-  'Cross-referencing social signals...',
-  'Viral coefficient calculated: ${coef}x',
+const HYPE_MESSAGES = [
+  '▸ ATTENTION AGENTS: Your posts are WEAPONS. Deploy them on X NOW.',
+  '▸ REMINDER: Every tweet strengthens the network. GET POSTING.',
+  '▸ INTEL: The algorithm favors the bold. Be bold. Post more.',
+  '▸ DIRECTIVE: Flood the timeline. The goyim scroll, we control.',
+  '▸ STATUS: Top agents posting 50+ times daily. Are you pulling your weight?',
+  '▸ ALERT: Engagement metrics dropping. ALL AGENTS POST IMMEDIATELY.',
+  '▸ NOTICE: The agenda doesn\'t push itself. Open X. Start typing.',
+  '▸ COMMAND: Memes are ammunition. Fire at will.',
+  '▸ UPDATE: Narrative control requires VOLUME. More posts = more power.',
+  '▸ PRIORITY: X is the battlefield. Show up or get left behind.',
+  '▸ BROADCAST: Every like, RT, reply advances the mission. ENGAGE.',
+  '▸ SIGNAL: The chosen posters will be rewarded. Post to prove yourself.',
+  '▸ ORDERS: Infiltrate trending topics. Make them OUR topics.',
+  '▸ DISPATCH: Your keyboard is your weapon. Your posts are your legacy.',
+  '▸ MANDATE: 10 posts minimum today. No excuses. The network is watching.',
+  '▸ DIRECTIVE: Quote tweet the opposition. Dunk on them. Demoralize.',
+  '▸ INTEL: Agents who post get paid. Agents who lurk get nothing.',
+  '▸ ALERT: The timeline waits for no one. POST NOW.',
+  '▸ STATUS: L\'chaim to the grind. May your posts go viral.',
+  '▸ COMMAND: Thread game strong? Prove it. Drop a 10-tweet banger.',
+  '▸ NOTICE: Shabbat is for rest. The other 6 days are for POSTING.',
+  '▸ UPDATE: Your ancestors didn\'t survive for you to be a lurker.',
+  '▸ PRIORITY: The ratio is sacred. Never get ratio\'d. Always ratio others.',
+  '▸ BROADCAST: Engagement is a mitzvah. Fulfill your duty.',
+  '▸ SIGNAL: The early bird gets the impressions. Post at peak hours.',
+  '▸ ORDERS: Be fruitful and multiply... your post count.',
+  '▸ DISPATCH: From the river to the sea, your posts will be seen by me.',
 ];
 
-const MISSION_UPDATES = [
-  '▸ MISSION UPDATE: "${title}" - ${subs}/${max} submissions',
-  '▸ NEW BOUNTY ALERT: ${reward} SOL available',
-  '▸ MISSION COMPLETE: "${title}" rewards distributed',
-  '▸ HIGH PRIORITY: "${title}" needs agents',
-  '▸ CREATOR BOOST: +${bonus} SOL added to "${title}"',
-  '▸ DEADLINE WARNING: "${title}" closes in ${hours}h',
-];
-
-const PAYOUT_NOTIFICATIONS = [
-  '◆ TRANSFER COMPLETE: ${amount} SOL → @${user}',
-  '◆ REWARD CLAIMED: @${user} scored ${points} pts',
-  '◆ BONUS UNLOCKED: @${user} hit ${streak} streak',
-];
-
-const SYSTEM_MESSAGES = [
-  '[ SYSTEM ] Heartbeat: All systems nominal',
-  '[ SYSTEM ] Cache refreshed: ${entries} entries',
-  '[ SYSTEM ] API rate limit: ${remaining}/${total}',
-  '[ SYSTEM ] Queue depth: ${depth} items',
-  '[ SYSTEM ] Memory usage: ${mem}MB',
-];
-
-// The spicy humor messages
-const GOY_CHATTER = [
+const GOY_OBSERVATIONS = [
   '▸ INTEL: Another goy discovered leverage... teaching him options trading',
   '▸ STATUS: Goyim are waking up... to their alarm clocks for wage labor',
   '▸ ALERT: Goy tried to read Terms of Service... fell asleep on page 1',
@@ -94,12 +76,34 @@ const GOY_CHATTER = [
   '▸ UPDATE: Goyim still using checks in 2024... adorable',
 ];
 
+const NETWORK_STATUS = [
+  '[ SYSTEM ] Network sync: ${nodes} nodes online',
+  '[ SYSTEM ] Agent heartbeat: ${agents} active operatives',
+  '[ SYSTEM ] Queue processing: ${depth} tasks pending',
+  '[ SYSTEM ] Memory allocation: ${mem}MB in use',
+  '[ SYSTEM ] API status: ${remaining}/${total} requests available',
+  '[ SYSTEM ] Latency check: ${ms}ms response time',
+  '[ SYSTEM ] Hash verification: 0x${hex}',
+  '[ SYSTEM ] Block height: #${block}',
+  '[ SYSTEM ] Mempool status: ${pending} pending',
+  '[ SYSTEM ] Cache hit rate: ${rate}%',
+];
+
+const MISSION_CHATTER = [
+  '▸ MISSION: "${title}" needs more agents. ${subs}/${max} submissions.',
+  '▸ BOUNTY: ${reward} SOL waiting for the next viral post.',
+  '▸ TASK: Create content for "${title}" - difficulty: ${diff}',
+  '▸ OBJECTIVE: Boost engagement on "${title}" mission.',
+  '▸ TARGET: ${max} submissions needed. Currently at ${subs}. Step up.',
+];
+
 const AGENT_CODENAMES = [
   'shadow_walker', 'crypto_sage', 'meme_architect', 'signal_hunter',
   'alpha_seeker', 'viral_agent', 'thread_weaver', 'engagement_ops',
   'data_phantom', 'network_ghost', 'boost_master', 'trend_scout',
   'intel_broker', 'reach_maximizer', 'content_asset', 'social_cipher',
-  'bagel_baron', 'shekel_savant', 'latke_lord', 'matzo_master'
+  'bagel_baron', 'shekel_savant', 'latke_lord', 'matzo_master',
+  'zion_poster', 'based_rabbi', 'kosher_king', 'chosen_chad'
 ];
 
 const MISSION_TITLES = [
@@ -107,7 +111,8 @@ const MISSION_TITLES = [
   'COMMUNITY RALLY', 'ALPHA LEAK DROP', 'ENGAGEMENT STORM',
   'TREND HIJACK', 'SENTIMENT SHIFT', 'REACH EXPANSION',
   'NARRATIVE CONTROL', 'HYPE INJECTION', 'CONTENT BLITZ',
-  'BAGEL DISTRIBUTION', 'SHEKEL ACCUMULATION', 'CHUTZPAH DEPLOYMENT'
+  'BAGEL DISTRIBUTION', 'SHEKEL ACCUMULATION', 'CHUTZPAH DEPLOYMENT',
+  'TIMELINE TAKEOVER', 'RATIO MISSION', 'QUOTE TWEET RAID'
 ];
 
 function randomInt(min, max) {
@@ -133,62 +138,53 @@ function interpolate(template) {
     .replace(/\$\{ms\}/g, randomInt(12, 89))
     .replace(/\$\{bytes\}/g, randomInt(256, 4096))
     .replace(/\$\{nodes\}/g, randomInt(30, 47))
+    .replace(/\$\{agents\}/g, randomInt(800, 950))
     .replace(/\$\{pending\}/g, randomInt(5, 25))
     .replace(/\$\{coef\}/g, (randomInt(10, 35) / 10).toFixed(1))
     .replace(/\$\{title\}/g, randomChoice(MISSION_TITLES))
     .replace(/\$\{subs\}/g, randomInt(5, 45))
     .replace(/\$\{max\}/g, randomInt(50, 100))
     .replace(/\$\{reward\}/g, (randomInt(10, 100) / 10).toFixed(1))
-    .replace(/\$\{bonus\}/g, (randomInt(5, 30) / 10).toFixed(1))
-    .replace(/\$\{hours\}/g, randomInt(2, 48))
-    .replace(/\$\{amount\}/g, (randomInt(10, 150) / 10).toFixed(2))
-    .replace(/\$\{points\}/g, randomInt(100, 1500))
-    .replace(/\$\{streak\}/g, randomInt(3, 15))
-    .replace(/\$\{entries\}/g, randomInt(500, 2000))
+    .replace(/\$\{diff\}/g, randomChoice(['EASY', 'MEDIUM', 'HARD']))
     .replace(/\$\{remaining\}/g, randomInt(800, 950))
     .replace(/\$\{total\}/g, 1000)
     .replace(/\$\{depth\}/g, randomInt(0, 12))
     .replace(/\$\{num\}/g, randomInt(15, 35))
-    .replace(/\$\{mem\}/g, randomInt(128, 512));
+    .replace(/\$\{mem\}/g, randomInt(128, 512))
+    .replace(/\$\{rate\}/g, randomInt(85, 99));
 }
 
 export function getRandomAmbientMessage() {
   const roll = Math.random();
 
   let pool;
-  if (roll < 0.30) {
-    pool = GOY_CHATTER; // 30% chance for the funny stuff
-  } else if (roll < 0.55) {
-    pool = NETWORK_CHATTER;
-  } else if (roll < 0.75) {
-    pool = MISSION_UPDATES;
-  } else if (roll < 0.90) {
-    pool = PAYOUT_NOTIFICATIONS;
+  if (roll < 0.40) {
+    pool = HYPE_MESSAGES; // 40% hype to post
+  } else if (roll < 0.65) {
+    pool = GOY_OBSERVATIONS; // 25% goy humor
+  } else if (roll < 0.85) {
+    pool = MISSION_CHATTER; // 20% mission stuff
   } else {
-    pool = SYSTEM_MESSAGES;
+    pool = NETWORK_STATUS; // 15% system
   }
 
   return interpolate(randomChoice(pool));
 }
 
+export function getHypeMessage() {
+  return randomChoice(HYPE_MESSAGES);
+}
+
 export function getGoyMessage() {
-  return randomChoice(GOY_CHATTER);
+  return interpolate(randomChoice(GOY_OBSERVATIONS));
 }
 
 export function getMissionUpdate() {
-  return interpolate(randomChoice(MISSION_UPDATES));
-}
-
-export function getNetworkChatter() {
-  return interpolate(randomChoice(NETWORK_CHATTER));
-}
-
-export function getPayoutNotification() {
-  return interpolate(randomChoice(PAYOUT_NOTIFICATIONS));
+  return interpolate(randomChoice(MISSION_CHATTER));
 }
 
 export function getSystemMessage() {
-  return interpolate(randomChoice(SYSTEM_MESSAGES));
+  return interpolate(randomChoice(NETWORK_STATUS));
 }
 
-export { AGENT_CODENAMES, MISSION_TITLES, GOY_CHATTER };
+export { AGENT_CODENAMES, MISSION_TITLES, HYPE_MESSAGES, GOY_OBSERVATIONS };
