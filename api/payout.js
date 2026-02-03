@@ -1,8 +1,27 @@
-// Vercel Serverless API - Payout endpoint
+// Vercel Serverless API - Payout endpoint with Upstash Redis
 
-let recentPayouts = [];
+const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 
-export default function handler(req, res) {
+async function redis(command, ...args) {
+  if (!UPSTASH_URL || !UPSTASH_TOKEN) {
+    return null;
+  }
+
+  const res = await fetch(`${UPSTASH_URL}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${UPSTASH_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify([command, ...args])
+  });
+
+  const data = await res.json();
+  return data.result;
+}
+
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -12,7 +31,13 @@ export default function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    return res.status(200).json(recentPayouts.slice(0, 20));
+    try {
+      const cached = await redis('GET', 'mossad:payouts');
+      if (cached) {
+        return res.status(200).json(JSON.parse(cached));
+      }
+    } catch (e) {}
+    return res.status(200).json([]);
   }
 
   if (req.method === 'POST') {
@@ -31,10 +56,24 @@ export default function handler(req, res) {
       verified: true
     };
 
-    recentPayouts.unshift(payout);
-    if (recentPayouts.length > 50) {
-      recentPayouts = recentPayouts.slice(0, 50);
+    // Get existing payouts and prepend new one
+    let payouts = [];
+    try {
+      const cached = await redis('GET', 'mossad:payouts');
+      if (cached) {
+        payouts = JSON.parse(cached);
+      }
+    } catch (e) {}
+
+    payouts.unshift(payout);
+    if (payouts.length > 50) {
+      payouts = payouts.slice(0, 50);
     }
+
+    // Save to Redis
+    try {
+      await redis('SET', 'mossad:payouts', JSON.stringify(payouts));
+    } catch (e) {}
 
     return res.status(200).json(payout);
   }

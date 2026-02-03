@@ -225,17 +225,19 @@ class MossadTerminal {
     document.getElementById('activeAgentsDisplay').textContent = this.stats.activeAgents;
   }
 
-  // Load stats from API
+  // Load stats from API and poll for updates
   async loadStats() {
-    try {
-      const res = await fetch('/api/stats');
-      if (res.ok) {
-        this.stats = await res.json();
-        this.updateStatsDisplay();
-      }
-    } catch (e) {
-      console.log('Using local stats');
-    }
+    const poll = async () => {
+      try {
+        const res = await fetch('/api/stats');
+        if (res.ok) {
+          this.stats = await res.json();
+          this.updateStatsDisplay();
+        }
+      } catch (e) {}
+      setTimeout(poll, 3000); // Poll every 3 seconds for global sync
+    };
+    poll();
   }
 
   // Poll for new payouts
@@ -255,7 +257,7 @@ class MossadTerminal {
           }
         }
       } catch (e) {}
-      setTimeout(check, 5000);
+      setTimeout(check, 3000); // Poll every 3 seconds for global sync
     };
     check();
   }
