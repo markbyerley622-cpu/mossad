@@ -1,77 +1,187 @@
 /**
  * MOSSAD AI AGENT - Terminal Frontend
+ * Vercel-compatible version (no WebSockets)
  */
+
+// Ambient message pools
+const HYPE_MESSAGES = [
+  '▸ ATTENTION AGENTS: Your posts are WEAPONS. Deploy them on X NOW.',
+  '▸ REMINDER: Every tweet strengthens the network. GET POSTING.',
+  '▸ INTEL: The algorithm favors the bold. Be bold. Post more.',
+  '▸ DIRECTIVE: Flood the timeline. The goyim scroll, we control.',
+  '▸ STATUS: Top agents posting 50+ times daily. Are you pulling your weight?',
+  '▸ ALERT: Engagement metrics dropping. ALL AGENTS POST IMMEDIATELY.',
+  '▸ NOTICE: The agenda doesn\'t push itself. Open X. Start typing.',
+  '▸ COMMAND: Memes are ammunition. Fire at will.',
+  '▸ UPDATE: Narrative control requires VOLUME. More posts = more power.',
+  '▸ PRIORITY: X is the battlefield. Show up or get left behind.',
+  '▸ BROADCAST: Every like, RT, reply advances the mission. ENGAGE.',
+  '▸ SIGNAL: The chosen posters will be rewarded. Post to prove yourself.',
+  '▸ ORDERS: Infiltrate trending topics. Make them OUR topics.',
+  '▸ DISPATCH: Your keyboard is your weapon. Your posts are your legacy.',
+  '▸ MANDATE: 10 posts minimum today. No excuses. The network is watching.',
+  '▸ DIRECTIVE: Quote tweet the opposition. Dunk on them. Demoralize.',
+  '▸ INTEL: Agents who post get paid. Agents who lurk get nothing.',
+  '▸ ALERT: The timeline waits for no one. POST NOW.',
+  '▸ STATUS: L\'chaim to the grind. May your posts go viral.',
+  '▸ COMMAND: Thread game strong? Prove it. Drop a 10-tweet banger.',
+  '▸ NOTICE: Shabbat is for rest. The other 6 days are for POSTING.',
+  '▸ UPDATE: Your ancestors didn\'t survive for you to be a lurker.',
+  '▸ PRIORITY: The ratio is sacred. Never get ratio\'d. Always ratio others.',
+  '▸ BROADCAST: Engagement is a mitzvah. Fulfill your duty.',
+];
+
+const GOY_MESSAGES = [
+  '▸ INTEL: Another goy discovered leverage... teaching him options trading',
+  '▸ STATUS: Goyim are waking up... to their alarm clocks for wage labor',
+  '▸ ALERT: Goy tried to read Terms of Service... fell asleep on page 1',
+  '▸ UPDATE: Local goy discovered compound interest, calls it "magic"',
+  '▸ REPORT: Goyim still think "free trial" means free',
+  '▸ NOTICE: Goy asked "what\'s the catch?" - told him "great question, sign here"',
+  '▸ INTEL: Goy bought high, sold low, blames "the algorithm"',
+  '▸ STATUS: Goyim fighting over politics while we fight over brisket recipes',
+  '▸ ALERT: Another goy learned about inflation... by checking grocery prices',
+  '▸ UPDATE: Goy says he\'s "doing his own research" (watching YouTube)',
+  '▸ REPORT: Goyim discovered hummus, think they invented it',
+  '▸ NOTICE: Local goy put life savings in memecoin, asks "wen lambo"',
+  '▸ INTEL: Goy read "Rich Dad Poor Dad", now gives financial advice',
+  '▸ STATUS: Goyim arguing about flat earth while we argue about flat bread',
+  '▸ ALERT: Goy tried to haggle at Walmart... security was called',
+  '▸ UPDATE: Another goy learned you can\'t day trade with $50',
+  '▸ REPORT: Goyim think "networking" means fixing their WiFi',
+  '▸ NOTICE: Goy discovered delayed gratification... hated it',
+  '▸ INTEL: Local goy thinks "diversification" is trying different fast food',
+  '▸ STATUS: Goy asked for financial advice, we said "buy low sell high" - still confused',
+  '▸ ALERT: Goyim found out about bagels... claiming them as "round bread"',
+  '▸ UPDATE: Goy thinks "passive income" is when his wife works',
+  '▸ REPORT: Another goy learned the hard way that leverage cuts both ways',
+  '▸ NOTICE: Goyim panic selling, time to accumulate',
+  '▸ INTEL: Goy read one book on investing, now has a podcast',
+  '▸ STATUS: Local goy still doesn\'t understand why we rest on Saturday',
+  '▸ ALERT: Goy discovered ETFs, feels like Warren Buffett',
+  '▸ UPDATE: Goyim asking "is crypto dead?" for the 47th time',
+  '▸ REPORT: Goy learned about index funds, tells everyone at parties',
+  '▸ NOTICE: Another goy bought NFT of a rock... mazel tov',
+  '▸ INTEL: Goyim think "generational wealth" is inheriting a boat',
+  '▸ STATUS: Goy tried to outsmart the IRS... IRS outsmarted back',
+];
+
+const SYSTEM_MESSAGES = [
+  '[ SYSTEM ] Network sync: {nodes} nodes online',
+  '[ SYSTEM ] Agent heartbeat: {agents} active operatives',
+  '[ SYSTEM ] Queue processing: {depth} tasks pending',
+  '[ SYSTEM ] Memory allocation: {mem}MB in use',
+  '[ SYSTEM ] API status: {remaining}/1000 requests available',
+  '[ SYSTEM ] Latency check: {ms}ms response time',
+  '[ SYSTEM ] Hash verification: 0x{hex}',
+  '[ SYSTEM ] Block height: #{block}',
+  '[ SYSTEM ] Mempool status: {pending} pending',
+  '[ SYSTEM ] Cache hit rate: {rate}%',
+];
+
+const MISSION_MESSAGES = [
+  '▸ MISSION: "{title}" needs more agents. {subs}/{max} submissions.',
+  '▸ BOUNTY: {reward} SOL waiting for the next viral post.',
+  '▸ TASK: Create content for "{title}" - difficulty: {diff}',
+  '▸ OBJECTIVE: Boost engagement on "{title}" mission.',
+  '▸ TARGET: {max} submissions needed. Currently at {subs}. Step up.',
+];
+
+const MISSION_TITLES = [
+  'VIRAL SIGNAL BOOST', 'MEME WARFARE OPS', 'DEEP THREAD INTEL',
+  'COMMUNITY RALLY', 'ALPHA LEAK DROP', 'ENGAGEMENT STORM',
+  'TREND HIJACK', 'SENTIMENT SHIFT', 'REACH EXPANSION',
+  'NARRATIVE CONTROL', 'HYPE INJECTION', 'CONTENT BLITZ',
+  'TIMELINE TAKEOVER', 'RATIO MISSION', 'QUOTE TWEET RAID'
+];
 
 class MossadTerminal {
   constructor() {
-    this.ws = null;
     this.maxFeedLines = 100;
     this.devPanelOpen = false;
+    this.stats = {
+      networkNodes: 47,
+      activeAgents: 892,
+      activeMissions: 23,
+      totalMissions: 147,
+      totalPayouts: 1847,
+      totalSolDistributed: 12453.7
+    };
     this.init();
   }
 
   init() {
-    this.connectWebSocket();
     this.setupKeyboard();
     this.setupDevPanel();
     this.startClock();
+    this.startAmbientFeed();
+    this.loadStats();
+    this.pollForPayouts();
+    this.addLine('Connected to MOSSAD network', 'system');
   }
 
-  // WebSocket
-  connectWebSocket() {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    this.ws = new WebSocket(`${protocol}//${window.location.host}`);
-
-    this.ws.onopen = () => {
-      this.addLine('Connected to MOSSAD network', 'system');
-    };
-
-    this.ws.onmessage = (e) => {
-      const msg = JSON.parse(e.data);
-      this.handleMessage(msg);
-    };
-
-    this.ws.onclose = () => {
-      this.addLine('Connection lost. Reconnecting...', 'system');
-      setTimeout(() => this.connectWebSocket(), 3000);
-    };
+  // Random helpers
+  randInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  handleMessage(msg) {
-    switch (msg.type) {
-      case 'init':
-        this.updateStats(msg.data.stats);
-        break;
+  randHex(len = 12) {
+    return [...Array(len)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+  }
 
-      case 'ambient':
-        const type = this.getMessageType(msg.data.message);
-        this.addLine(msg.data.message, type);
-        break;
+  randChoice(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
 
-      case 'payout':
-        this.showPayout(msg.data);
-        break;
+  // Generate ambient message
+  generateMessage() {
+    const roll = Math.random();
+    let msg, type;
 
-      case 'stats':
-        this.updateStats(msg.data);
-        break;
+    if (roll < 0.40) {
+      msg = this.randChoice(HYPE_MESSAGES);
+      type = 'hype';
+    } else if (roll < 0.65) {
+      msg = this.randChoice(GOY_MESSAGES);
+      type = 'goy';
+    } else if (roll < 0.85) {
+      msg = this.randChoice(MISSION_MESSAGES)
+        .replace('{title}', this.randChoice(MISSION_TITLES))
+        .replace('{subs}', this.randInt(5, 45))
+        .replace('{max}', this.randInt(50, 100))
+        .replace('{reward}', (this.randInt(10, 100) / 10).toFixed(1))
+        .replace('{diff}', this.randChoice(['EASY', 'MEDIUM', 'HARD']));
+      type = 'mission';
+    } else {
+      msg = this.randChoice(SYSTEM_MESSAGES)
+        .replace('{nodes}', this.stats.networkNodes)
+        .replace('{agents}', this.stats.activeAgents)
+        .replace('{depth}', this.randInt(0, 15))
+        .replace('{mem}', this.randInt(128, 512))
+        .replace('{remaining}', this.randInt(800, 950))
+        .replace('{ms}', this.randInt(12, 89))
+        .replace('{hex}', this.randHex())
+        .replace('{block}', this.randInt(18000000, 19000000))
+        .replace('{pending}', this.randInt(5, 25))
+        .replace('{rate}', this.randInt(85, 99));
+      type = 'system';
     }
+
+    return { msg, type };
   }
 
-  getMessageType(message) {
-    if (message.includes('ATTENTION') || message.includes('REMINDER') ||
-        message.includes('DIRECTIVE') || message.includes('COMMAND') ||
-        message.includes('MANDATE') || message.includes('ORDERS') ||
-        message.includes('PRIORITY') || message.includes('BROADCAST')) {
-      return 'hype';
-    }
-    if (message.toLowerCase().includes('goy')) return 'goy';
-    if (message.includes('SYSTEM')) return 'system';
-    if (message.includes('MISSION') || message.includes('BOUNTY') || message.includes('TASK')) return 'mission';
-    return 'info';
+  // Start ambient feed
+  startAmbientFeed() {
+    const post = () => {
+      const { msg, type } = this.generateMessage();
+      this.addLine(msg, type);
+      const delay = 1500 + Math.random() * 2500;
+      setTimeout(post, delay);
+    };
+    setTimeout(post, 1000);
   }
 
-  // UI Updates
+  // Add line to feed
   addLine(message, type = 'info') {
     const feed = document.getElementById('liveFeed');
     const timestamp = new Date().toLocaleTimeString();
@@ -82,12 +192,12 @@ class MossadTerminal {
 
     feed.insertBefore(line, feed.firstChild);
 
-    // Trim old lines
     while (feed.children.length > this.maxFeedLines) {
       feed.removeChild(feed.lastChild);
     }
   }
 
+  // Show payout
   showPayout(payout) {
     const feed = document.getElementById('liveFeed');
 
@@ -104,17 +214,53 @@ class MossadTerminal {
     feed.insertBefore(block, feed.firstChild);
   }
 
-  updateStats(stats) {
-    document.getElementById('nodeCount').textContent = stats.networkNodes || 47;
-    document.getElementById('agentCount').textContent = stats.activeAgents || 892;
-    document.getElementById('activeMissions').textContent = stats.activeMissions || 23;
-    document.getElementById('totalMissions').textContent = stats.totalMissions || 147;
-    document.getElementById('totalPayouts').textContent = (stats.totalPayouts || 1847).toLocaleString();
-    document.getElementById('totalSol').textContent = (stats.totalSolDistributed || 12453.7).toLocaleString();
-    document.getElementById('activeAgentsDisplay').textContent = stats.activeAgents || 892;
+  // Update stats display
+  updateStatsDisplay() {
+    document.getElementById('nodeCount').textContent = this.stats.networkNodes;
+    document.getElementById('agentCount').textContent = this.stats.activeAgents;
+    document.getElementById('activeMissions').textContent = this.stats.activeMissions;
+    document.getElementById('totalMissions').textContent = this.stats.totalMissions;
+    document.getElementById('totalPayouts').textContent = this.stats.totalPayouts.toLocaleString();
+    document.getElementById('totalSol').textContent = this.stats.totalSolDistributed.toLocaleString();
+    document.getElementById('activeAgentsDisplay').textContent = this.stats.activeAgents;
   }
 
-  // Keyboard
+  // Load stats from API
+  async loadStats() {
+    try {
+      const res = await fetch('/api/stats');
+      if (res.ok) {
+        this.stats = await res.json();
+        this.updateStatsDisplay();
+      }
+    } catch (e) {
+      console.log('Using local stats');
+    }
+  }
+
+  // Poll for new payouts
+  pollForPayouts() {
+    let lastPayoutId = null;
+
+    const check = async () => {
+      try {
+        const res = await fetch('/api/payout');
+        if (res.ok) {
+          const payouts = await res.json();
+          if (payouts.length > 0 && payouts[0].id !== lastPayoutId) {
+            if (lastPayoutId !== null) {
+              this.showPayout(payouts[0]);
+            }
+            lastPayoutId = payouts[0].id;
+          }
+        }
+      } catch (e) {}
+      setTimeout(check, 5000);
+    };
+    check();
+  }
+
+  // Keyboard shortcuts
   setupKeyboard() {
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey && e.key === 'd') {
@@ -137,7 +283,6 @@ class MossadTerminal {
     document.getElementById('submitPayout').addEventListener('click', () => this.submitPayout());
     document.getElementById('updateStats').addEventListener('click', () => this.updateStatsManual());
 
-    // Enter to submit
     document.querySelectorAll('.dev-input').forEach(input => {
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -161,7 +306,7 @@ class MossadTerminal {
     }
   }
 
-  submitPayout() {
+  async submitPayout() {
     const username = document.getElementById('inputUsername').value.trim();
     const txUrl = document.getElementById('inputTxUrl').value.trim();
     const amount = document.getElementById('inputAmount').value.trim();
@@ -171,54 +316,62 @@ class MossadTerminal {
       return;
     }
 
-    fetch('/api/payout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, txUrl, amount })
-    })
-    .then(res => res.json())
-    .then(() => {
+    try {
+      const res = await fetch('/api/payout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, txUrl, amount })
+      });
+
+      if (res.ok) {
+        const payout = await res.json();
+        this.showPayout(payout);
+        document.getElementById('inputUsername').value = '';
+        document.getElementById('inputTxUrl').value = '';
+        document.getElementById('inputAmount').value = '';
+        this.toggleDevPanel();
+      }
+    } catch (e) {
+      // Fallback: show locally
+      this.showPayout({
+        username: username.startsWith('@') ? username : `@${username}`,
+        txUrl,
+        amount: parseFloat(amount).toFixed(2)
+      });
       document.getElementById('inputUsername').value = '';
       document.getElementById('inputTxUrl').value = '';
       document.getElementById('inputAmount').value = '';
       this.toggleDevPanel();
-    })
-    .catch(err => alert('Failed to submit payout'));
+    }
   }
 
-  updateStatsManual() {
+  async updateStatsManual() {
     const agents = document.getElementById('inputAgents').value.trim();
     const payouts = document.getElementById('inputPayouts').value.trim();
     const nodes = document.getElementById('inputNodes').value.trim();
     const solDistributed = document.getElementById('inputSolDist').value.trim();
 
-    const updates = {};
-    if (agents) updates.agents = agents;
-    if (payouts) updates.payouts = payouts;
-    if (nodes) updates.nodes = nodes;
-    if (solDistributed) updates.solDistributed = solDistributed;
+    if (agents) this.stats.activeAgents = parseInt(agents);
+    if (payouts) this.stats.totalPayouts = parseInt(payouts);
+    if (nodes) this.stats.networkNodes = parseInt(nodes);
+    if (solDistributed) this.stats.totalSolDistributed = parseFloat(solDistributed);
 
-    if (Object.keys(updates).length === 0) {
-      alert('Fill in at least one stat');
-      return;
-    }
+    this.updateStatsDisplay();
 
-    fetch('/api/stats', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates)
-    })
-    .then(res => res.json())
-    .then(data => {
-      this.updateStats(data);
-      this.addLine('System stats updated by admin', 'system');
-      document.getElementById('inputAgents').value = '';
-      document.getElementById('inputPayouts').value = '';
-      document.getElementById('inputNodes').value = '';
-      document.getElementById('inputSolDist').value = '';
-      this.toggleDevPanel();
-    })
-    .catch(err => alert('Failed to update stats'));
+    try {
+      await fetch('/api/stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ agents, payouts, nodes, solDistributed })
+      });
+    } catch (e) {}
+
+    this.addLine('System stats updated by admin', 'system');
+    document.getElementById('inputAgents').value = '';
+    document.getElementById('inputPayouts').value = '';
+    document.getElementById('inputNodes').value = '';
+    document.getElementById('inputSolDist').value = '';
+    this.toggleDevPanel();
   }
 
   // Clock
