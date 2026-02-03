@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✡ MOSSAD AI AGENT</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✡</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="matrix-bg" id="matrixBg"></div>
+  <div class="star-field" id="starField"></div>
+  <div class="scan-line"></div>
+
+  <!-- Main container -->
+  <div class="terminal-container">
+    <!-- Header -->
+    <header class="terminal-header">
+      <div class="header-left">
+        <span class="status-dot online"></span>
+        <span class="status-text">ONLINE</span>
+        <span class="divider">│</span>
+        <span class="node-count">NODES: <span id="nodeCount">47</span></span>
+        <span class="divider">│</span>
+        <span class="agent-count">AGENTS: <span id="agentCount">892</span></span>
+      </div>
+      <div class="header-center">
+        <span class="logo-star">✡</span>
+        <span class="logo-text">MOSSAD AI AGENT</span>
+        <span class="logo-star">✡</span>
+      </div>
+      <div class="header-right">
+        <span class="clock" id="clock">00:00:00</span>
+      </div>
+    </header>
+
+    <!-- Main content grid -->
+    <main class="main-grid">
+      <!-- Left panel: Missions -->
+      <section class="panel missions-panel">
+        <div class="panel-header">
+          <span class="panel-icon">◆</span>
+          <span class="panel-title">ACTIVE MISSIONS</span>
+        </div>
+        <div class="panel-content" id="missionsList">
+          <!-- Missions loaded dynamically -->
+        </div>
+      </section>
+
+      <!-- Center panel: Live Feed -->
+      <section class="panel feed-panel">
+        <div class="panel-header">
+          <span class="panel-icon blink">⚡</span>
+          <span class="panel-title">LIVE NETWORK FEED</span>
+        </div>
+        <div class="panel-content feed-content" id="liveFeed">
+          <!-- Feed messages appear here -->
+        </div>
+      </section>
+
+      <!-- Right panel: Leaderboard -->
+      <section class="panel leaderboard-panel">
+        <div class="panel-header">
+          <span class="panel-icon">♔</span>
+          <span class="panel-title">LEADERBOARD</span>
+        </div>
+        <div class="panel-content" id="leaderboard">
+          <!-- Leaderboard loaded dynamically -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-label">MISSIONS</span>
+        <span class="stat-value"><span id="activeMissions">23</span>/<span id="totalMissions">147</span></span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">PAYOUTS</span>
+        <span class="stat-value" id="totalPayouts">1,847</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">DISTRIBUTED</span>
+        <span class="stat-value sol"><span id="totalSol">12,453.7</span> SOL</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">ACTIVE AGENTS</span>
+        <span class="stat-value" id="activeAgentsDisplay">892</span>
+      </div>
+    </div>
+
+    <!-- Footer with hints -->
+    <footer class="terminal-footer">
+      <span class="hint">[CTRL+D] Dev Panel</span>
+      <span class="hint">[CTRL+L] Clear Feed</span>
+      <span class="mascot">✡ ◉‿◉ ✡</span>
+    </footer>
+  </div>
+
+  <!-- Dev Panel Overlay -->
+  <div class="dev-panel-overlay" id="devPanel">
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-star">✡</span>
+        <span class="dev-title">DEVELOPER PANEL</span>
+        <span class="dev-star">✡</span>
+      </div>
+      <div class="dev-panel-subtitle">Manual Control System</div>
+
+      <div class="dev-section">
+        <div class="dev-section-title">═══ PAYOUT ENTRY ═══</div>
+        <div class="dev-field">
+          <label>X USERNAME</label>
+          <input type="text" id="inputUsername" placeholder="@username">
+        </div>
+        <div class="dev-field">
+          <label>SOLSCAN TX URL</label>
+          <input type="text" id="inputTxUrl" placeholder="https://solscan.io/tx/...">
+        </div>
+        <div class="dev-field">
+          <label>SOL AMOUNT</label>
+          <input type="number" id="inputAmount" placeholder="0.00" step="0.01">
+        </div>
+        <button class="dev-button" id="submitPayout">◆ SUBMIT PAYOUT ◆</button>
+      </div>
+
+      <div class="dev-section">
+        <div class="dev-section-title">═══ SYSTEM CONTROLS ═══</div>
+        <div class="dev-field">
+          <label>ACTIVE AGENTS</label>
+          <input type="number" id="inputAgents" placeholder="892">
+        </div>
+        <div class="dev-field">
+          <label>TOTAL PAYOUTS</label>
+          <input type="number" id="inputPayouts" placeholder="1847">
+        </div>
+        <div class="dev-field">
+          <label>NETWORK NODES</label>
+          <input type="number" id="inputNodes" placeholder="47">
+        </div>
+        <div class="dev-field">
+          <label>SOL DISTRIBUTED</label>
+          <input type="number" id="inputSolDist" placeholder="12453.7" step="0.1">
+        </div>
+        <button class="dev-button secondary" id="updateStats">⚡ UPDATE STATS ⚡</button>
+      </div>
+
+      <div class="dev-footer">
+        <span>[ESC] Close</span>
+        <span>[TAB] Next Field</span>
+        <span>[ENTER] Submit</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
