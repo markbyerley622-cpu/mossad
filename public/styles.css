@@ -280,9 +280,22 @@ body::before {
 .terminal-footer {
   padding: 8px 25px;
   color: var(--fg-dim);
-  font-size: 10px;
-  text-align: right;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   border-top: 1px solid rgba(0, 56, 184, 0.3);
+}
+
+.x-link {
+  color: var(--israel-blue-bright);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.x-link:hover {
+  color: var(--israel-white);
+  text-shadow: 0 0 10px rgba(0, 56, 184, 0.5);
 }
 
 .mascot {

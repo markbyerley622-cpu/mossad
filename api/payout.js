@@ -8,20 +8,24 @@ async function redis(command, ...args) {
     return null;
   }
 
-  const res = await fetch(`${UPSTASH_URL}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${UPSTASH_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify([command, ...args])
-  });
+  try {
+    const res = await fetch(UPSTASH_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${UPSTASH_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([command, ...args])
+    });
 
-  const data = await res.json();
-  return data.result;
+    const data = await res.json();
+    return data.result;
+  } catch (e) {
+    return null;
+  }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -41,7 +45,7 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { username, txUrl, amount } = req.body;
+    const { username, txUrl, amount } = req.body || {};
 
     if (!username || !txUrl || !amount) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -56,7 +60,6 @@ export default async function handler(req, res) {
       verified: true
     };
 
-    // Get existing payouts and prepend new one
     let payouts = [];
     try {
       const cached = await redis('GET', 'mossad:payouts');
@@ -70,7 +73,6 @@ export default async function handler(req, res) {
       payouts = payouts.slice(0, 50);
     }
 
-    // Save to Redis
     try {
       await redis('SET', 'mossad:payouts', JSON.stringify(payouts));
     } catch (e) {}
@@ -79,4 +81,4 @@ export default async function handler(req, res) {
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
-}
+};

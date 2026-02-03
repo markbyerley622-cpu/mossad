@@ -17,20 +17,24 @@ async function redis(command, ...args) {
     return null;
   }
 
-  const res = await fetch(`${UPSTASH_URL}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${UPSTASH_TOKEN}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify([command, ...args])
-  });
+  try {
+    const res = await fetch(UPSTASH_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${UPSTASH_TOKEN}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify([command, ...args])
+    });
 
-  const data = await res.json();
-  return data.result;
+    const data = await res.json();
+    return data.result;
+  } catch (e) {
+    return null;
+  }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -50,9 +54,8 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { agents, payouts, nodes, solDistributed } = req.body;
+    const { agents, payouts, nodes, solDistributed } = req.body || {};
 
-    // Get current stats
     let stats = { ...DEFAULT_STATS };
     try {
       const cached = await redis('GET', 'mossad:stats');
@@ -61,13 +64,11 @@ export default async function handler(req, res) {
       }
     } catch (e) {}
 
-    // Update stats
     if (agents !== undefined) stats.activeAgents = parseInt(agents);
     if (payouts !== undefined) stats.totalPayouts = parseInt(payouts);
     if (nodes !== undefined) stats.networkNodes = parseInt(nodes);
     if (solDistributed !== undefined) stats.totalSolDistributed = parseFloat(solDistributed);
 
-    // Save to Redis
     try {
       await redis('SET', 'mossad:stats', JSON.stringify(stats));
     } catch (e) {}
@@ -76,4 +77,4 @@ export default async function handler(req, res) {
   }
 
   return res.status(405).json({ error: 'Method not allowed' });
-}
+};
