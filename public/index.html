@@ -9,42 +9,48 @@
 </head>
 <body>
   <div class="terminal">
-    <!-- Header -->
-    <div class="terminal-header">
-      <span class="header-title">✡ MOSSAD AI AGENT ✡</span>
-      <span class="header-status">
-        <span class="status-dot"></span>ONLINE
-        <span class="separator">│</span>
-        NODES: <span id="nodeCount">47</span>
-        <span class="separator">│</span>
-        AGENTS: <span id="agentCount">892</span>
-        <span class="separator">│</span>
+    <!-- ASCII Art Header -->
+    <div class="ascii-header">
+      <pre class="ascii-art">
+███╗   ███╗ ██████╗ ███████╗███████╗ █████╗ ██████╗      █████╗ ██╗
+████╗ ████║██╔═══██╗██╔════╝██╔════╝██╔══██╗██╔══██╗    ██╔══██╗██║
+██╔████╔██║██║   ██║███████╗███████╗███████║██║  ██║    ███████║██║
+██║╚██╔╝██║██║   ██║╚════██║╚════██║██╔══██║██║  ██║    ██╔══██║██║
+██║ ╚═╝ ██║╚██████╔╝███████║███████║██║  ██║██████╔╝    ██║  ██║██║
+╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚═════╝     ╚═╝  ╚═╝╚═╝
+            ✡ SOCIAL INTELLIGENCE NETWORK ✡  v2.0.0
+      </pre>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <div class="status-left">
+        <span><span class="status-dot"></span><span class="status-value">ONLINE</span></span>
+        <span class="status-item">NODES: <span class="status-value" id="nodeCount">47</span></span>
+        <span class="status-item">AGENTS: <span class="status-value" id="agentCount">892</span></span>
+      </div>
+      <div class="status-right">
         <span id="clock">00:00:00</span>
-      </span>
+      </div>
     </div>
 
     <!-- Main feed -->
-    <div class="terminal-body" id="terminalBody">
+    <div class="terminal-body">
       <div class="feed" id="liveFeed">
         <!-- Feed messages here -->
       </div>
     </div>
 
-    <!-- Stats line -->
+    <!-- Stats bar -->
     <div class="terminal-stats">
-      MISSIONS: <span id="activeMissions">23</span>/<span id="totalMissions">147</span>
-      <span class="separator">│</span>
-      PAYOUTS: <span id="totalPayouts">1,847</span>
-      <span class="separator">│</span>
-      DISTRIBUTED: <span class="gold" id="totalSol">12,453.7</span> SOL
-      <span class="separator">│</span>
-      ACTIVE: <span id="activeAgentsDisplay">892</span>
+      <span class="stat-item">MISSIONS: <span class="stat-value" id="activeMissions">23</span>/<span class="stat-value" id="totalMissions">147</span></span>
+      <span class="stat-item">PAYOUTS: <span class="stat-value" id="totalPayouts">1,847</span></span>
+      <span class="stat-item">DISTRIBUTED: <span class="stat-value gold" id="totalSol">12,453.7</span> SOL</span>
+      <span class="stat-item">ACTIVE: <span class="stat-value" id="activeAgentsDisplay">892</span></span>
     </div>
 
-    <!-- Footer -->
+    <!-- Minimal footer -->
     <div class="terminal-footer">
-      <span>[CTRL+D] Dev Panel</span>
-      <span>[CTRL+L] Clear</span>
       <span class="mascot">[ ✡ ◉‿◉ ✡ ]</span>
     </div>
   </div>
@@ -52,55 +58,53 @@
   <!-- Dev Panel Overlay -->
   <div class="dev-overlay" id="devPanel">
     <div class="dev-box">
-      <div class="dev-header">
-═══════════════════════════════════════════════════════
-                  ✡ DEVELOPER PANEL ✡
-               Manual Control Interface
-═══════════════════════════════════════════════════════
-      </div>
+      <pre class="dev-header">
+╔═══════════════════════════════════════════════════════╗
+║           ✡ MOSSAD DEVELOPER PANEL ✡                 ║
+║              Manual Control Interface                 ║
+╚═══════════════════════════════════════════════════════╝
+      </pre>
 
       <div class="dev-section">
-        <div class="dev-label">──── PAYOUT ENTRY ────</div>
+        <div class="dev-label">▸ PAYOUT ENTRY</div>
         <div class="dev-row">
-          <span class="dev-field-label">X USERNAME:</span>
+          <span class="dev-field-label">X USERNAME</span>
           <input type="text" id="inputUsername" placeholder="@username" class="dev-input">
         </div>
         <div class="dev-row">
-          <span class="dev-field-label">SOLSCAN TX:</span>
+          <span class="dev-field-label">SOLSCAN TX</span>
           <input type="text" id="inputTxUrl" placeholder="https://solscan.io/tx/..." class="dev-input">
         </div>
         <div class="dev-row">
-          <span class="dev-field-label">SOL AMOUNT:</span>
+          <span class="dev-field-label">SOL AMOUNT</span>
           <input type="number" id="inputAmount" placeholder="0.00" step="0.01" class="dev-input">
         </div>
-        <button class="dev-btn" id="submitPayout">[ SUBMIT PAYOUT ]</button>
+        <button class="dev-btn" id="submitPayout">SUBMIT PAYOUT</button>
       </div>
 
       <div class="dev-section">
-        <div class="dev-label">──── SYSTEM STATS ────</div>
+        <div class="dev-label">▸ SYSTEM OVERRIDE</div>
         <div class="dev-row">
-          <span class="dev-field-label">AGENTS:</span>
+          <span class="dev-field-label">AGENTS</span>
           <input type="number" id="inputAgents" placeholder="892" class="dev-input">
         </div>
         <div class="dev-row">
-          <span class="dev-field-label">PAYOUTS:</span>
+          <span class="dev-field-label">PAYOUTS</span>
           <input type="number" id="inputPayouts" placeholder="1847" class="dev-input">
         </div>
         <div class="dev-row">
-          <span class="dev-field-label">NODES:</span>
+          <span class="dev-field-label">NODES</span>
           <input type="number" id="inputNodes" placeholder="47" class="dev-input">
         </div>
         <div class="dev-row">
-          <span class="dev-field-label">SOL DIST:</span>
+          <span class="dev-field-label">SOL DIST</span>
           <input type="number" id="inputSolDist" placeholder="12453.7" step="0.1" class="dev-input">
         </div>
-        <button class="dev-btn secondary" id="updateStats">[ UPDATE STATS ]</button>
+        <button class="dev-btn secondary" id="updateStats">UPDATE STATS</button>
       </div>
 
       <div class="dev-footer">
-═══════════════════════════════════════════════════════
-        [ESC] Close    [TAB] Next    [ENTER] Submit
-═══════════════════════════════════════════════════════
+        [ESC] Close  ·  [TAB] Next  ·  [ENTER] Submit
       </div>
     </div>
   </div>
