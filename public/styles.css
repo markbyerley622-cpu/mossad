@@ -73,6 +73,22 @@ body::before {
   line-height: 1.2;
   text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
   white-space: pre;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  color: var(--gold);
+  font-size: 14px;
+  letter-spacing: 1px;
+  margin-top: 5px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.tagline-sub {
+  color: var(--fg-dim);
+  font-size: 12px;
+  margin-top: 5px;
+  letter-spacing: 0.5px;
 }
 
 /* Status bar */
