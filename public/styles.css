@@ -61,16 +61,40 @@ body::before {
 
 /* ASCII Header */
 .ascii-header {
-  padding: 15px 20px;
+  padding: 20px;
   text-align: center;
-  background: linear-gradient(180deg, rgba(0,100,200,0.1) 0%, transparent 100%);
+  background: linear-gradient(180deg, rgba(0,100,200,0.15) 0%, transparent 100%);
   border-bottom: 1px solid var(--fg-dim);
+}
+
+.header-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.flag-img {
+  width: 120px;
+  height: auto;
+  border: 2px solid var(--fg-dim);
+  box-shadow: 0 0 20px rgba(0, 170, 255, 0.3);
+  animation: flagGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes flagGlow {
+  0% { box-shadow: 0 0 20px rgba(0, 170, 255, 0.3); }
+  100% { box-shadow: 0 0 40px rgba(0, 170, 255, 0.6); }
+}
+
+.ascii-container {
+  text-align: center;
 }
 
 .ascii-art {
   color: var(--fg-bright);
-  font-size: 10px;
-  line-height: 1.2;
+  font-size: 8px;
+  line-height: 1.1;
   text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
   white-space: pre;
   margin-bottom: 10px;
@@ -78,15 +102,15 @@ body::before {
 
 .tagline {
   color: var(--gold);
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 1px;
-  margin-top: 5px;
+  margin-top: 8px;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
 .tagline-sub {
   color: var(--fg-dim);
-  font-size: 12px;
+  font-size: 11px;
   margin-top: 5px;
   letter-spacing: 0.5px;
 }
